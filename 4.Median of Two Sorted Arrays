@@ -1,3 +1,4 @@
+方法1  自己的
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
         nums1.extend(nums2)  #数组2加到数组1
@@ -12,3 +13,11 @@ class Solution:
             else:
                 result = float((nums1[a-1]+nums1[a])/2)
         return result
+
+
+方法2  调用statistics的median函数
+from statistics import median
+
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        return median(sorted(nums1 + nums2))   
