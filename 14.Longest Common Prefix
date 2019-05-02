@@ -1,0 +1,11 @@
+class Solution:
+    def longestCommonPrefix(self, strs: List[str])  -> str:
+        if len(strs) == 0:
+            return ""
+        else:
+            str1 = min(strs,key = len)
+            for index,ele in enumerate(str1):  # find the str1's ele and index
+                for other in strs:
+                    if other[index] != ele:   # 找到不相同的值的引索，然后打印前面的就为正确的结果，如果全部都相同，则直接返回str1
+                        return str1[:index]
+        return str1
