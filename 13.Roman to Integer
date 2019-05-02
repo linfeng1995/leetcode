@@ -1,0 +1,13 @@
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        dict1 = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000}
+        # if len(s)==1 and s in dict1.keys():  # case1: s == one of 'IVXLCDM'
+        #     result = dict1[s]
+        if all(ele in dict1.keys() for ele in s):  # the s every one ele in 'IVXLCDM'
+            result = dict1[s[-1]]
+            for i in range(len(s)-1):
+                if dict1[s[i]] >= dict1[s[i+1]]:
+                    result += dict1[s[i]]
+                else:
+                    result -= dict1[s[i]]
+        return result
