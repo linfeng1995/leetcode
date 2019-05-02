@@ -1,0 +1,31 @@
+class Solution:
+    def myAtoi(self, str: str) -> int:
+        str1 = str.lstrip()
+        result = ''
+        a = '0123456789'
+        b = '+-'
+        if str1 == '' or str1 == '+' or str1 == '-':  # the special case
+            result = 0
+        else:
+            if str1[0] in a:   # the start is number
+                for i in range(len(str1)):
+                    if str1[i] in a:
+                        result += str1[i]
+                    else:
+                        break
+            elif str1[0] in b and str1[1] in a:   # the start is '+-' and the second is number, remove '-+2'
+                result = str1[0]       # add the '+' or '-'
+                for i in range(1,len(str1)):
+                    if str1[i] in a :
+                        result += str1[i]
+                    else:
+                        break
+            else:
+                result = 0
+
+            if int(result) > (2**31 -1):
+                result = 2**31 -1
+            elif int(result) < (-2**31):
+                result = -2**31
+        
+        return int(result)
