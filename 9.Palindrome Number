@@ -1,0 +1,26 @@
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+# 方法1  
+#         x=str(x)
+#         if x[::-1]==x:
+#             return True
+#         else:
+#             return False
+        
+        
+        
+#方法2自己的
+        y = str(x)
+        lengh = len(y)
+        if y[0] == '-':
+            result = False
+        else:
+            for i in range(lengh):
+                if i <= lengh-1-i:
+                    if y[i] == y[lengh-1-i]:
+                        result = True
+                    else:
+                        result = False
+                        break
+                    
+        return result
