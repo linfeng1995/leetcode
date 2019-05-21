@@ -1,0 +1,196 @@
+一、链表的基本知识
+最近在leetcode刷题时遇到了几道关于链表的题，于是恶补了一下关于链表的知识。什么是链表？熟悉python语法的同学肯定都知道list，但是这并不是真正意义上的链表（linked list）。链表是由一系列的节点(node)来实现的，通过每一个node存储下一个节点的指针来实现一种快速的插入。此外每个节点都有一个cargo包含一定的数据。根据链表结构的不同，其种类可以分为单向链表、单项循环链表、双向链表、双向循环链表等。
+二、创建一个新链表
+由于链表的功能是依靠节点来完成的，所以链表的建立必然要先建立节点类。我们通过节点间传递值的方式将指针指向下一个节点。如下代码是一个链表的创建，下一节将介绍如何遍历(traverse)链表。
+class Node:
+    def __init__(self, dataval=None):
+        self.dataval = dataval
+        self.nextval = None
+
+class SLinkedList:
+    def __init__(self):
+        self.headval = None
+         
+li = SLinkedList()
+li.headval = Node("Mon")
+e2 = Node("Tue")
+e3 = Node("Wed")
+
+# 连接第一第二个节点
+li.headval.nextval = e2
+
+# 连接第二第三个节点
+e2.nextval = e3
+
+print(e2.nextval)
+#结果为e3内存地址<__main__.Node object at 0x0000001A0F9644BE0>
+print(e2.nextval.dataval)
+#结果为e3所代表的值Wed
+复制代码三、链表遍历
+在创建完链表之后，可以通过输入第一个节点的方式遍历整个链表
+#在链表末尾添加一个新的node
+    def append(self, newdata):
+        NewNode = Node(newdata)
+        if self.headval is None:
+            self.headval = NewNode
+            return
+        laste = self.headval
+        while(laste.nextval):
+            laste = laste.nextval
+        laste.nextval=NewNode
+
+# 打印链表
+    def show(self):
+        printval = self.headval
+        while printval:
+            print (printval.dataval)
+            printval = printval.nextval
+复制代码结果是：
+Mon
+Tue
+Wed
+Thu
+复制代码四、插入
+在链表中插入一个元素指的是将指针从一个已经存在的节点指向一个新插入的节点。取决于不同的插入位置，主要有以下几种情形。
+1、插入在链表开头
+在开头插入一个节点顾名思义是将原来的节点变为第二个节点即可，后续排列顺序不变。
+#插入在开头位置,链表左侧   
+    def add_left(self,newdata):
+        NewNode = Node(newdata)
+复制代码结果：
+Sun
+Mon
+Tue
+Wed
+复制代码2、插入在链表末尾
+和插入在开头类似，需要做的是将原本链表末尾的指针指向新的节点，即原本最后一个指针变为倒数第二个，新节点变成最后一个节点。
+#添加道末尾
+def append(self, newdata):
+        NewNode = Node(newdata)
+        #判断是否原链表没有节点，如果没有，该节点就是第一个节点
+        if not self.headval:
+            self.headval = NewNode
+            return
+        laste = self.headval
+        #while执行后,laste.nextval如果一直存在，遍历直至原链表最后一个
+        while(laste.nextval):
+            laste = laste.nextval
+        #在原最后一个节点之后再续一个节点
+        laste.nextval=NewNode
+
+li.append("Thu")
+
+li.show()
+复制代码结果：
+Mon
+Tue
+Wed
+Thu
+复制代码3、在两个元素中间插入
+如果大家向在链表中间插入一个节点，又该怎么办呢？相信大家在熟悉了前两种插入模式后，对在链表中间插入应该也能掌握吧。没错，他们都是异曲同工的。同样是在指针上做文章。把需要插入位置的前一个指针指向新节点，将新节点的指针指向插入位置的下一个节点即可。
+class Node:
+    def __init__(self, dataval=None):
+        self.dataval = dataval
+        self.nextval = None
+
+class SLinkedList:
+    def __init__(self):
+        self.headval = None
+
+# 添加节点
+    def insert(self,middle_node,newdata):
+        if not middle_node:
+            print("The mentioned node is absent")
+            return
+
+        NewNode = Node(newdata)
+        NewNode.nextval = middle_node.nextval
+        middle_node.nextval = NewNode
+
+# 打印列表
+    def listprint(self):
+        printval = self.headval
+        while printval is not None:
+            print (printval.dataval)
+            printval = printval.nextval
+
+
+li = SLinkedList()
+li.headval = Node("Mon")
+e2 = Node("Tue")
+e3 = Node("Thu")
+
+li.headval.nextval = e2
+e2.nextval = e3
+
+li.insert(list.headval.nextval,"Fri")
+
+li.show()
+复制代码结果：
+Mon
+Tue
+Fri
+Thu
+复制代码五、删除链表元素
+讲完了增加，那么紧接着的便是删除啦。
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+
+class SLinkedList:
+    def __init__(self):
+        self.head = None
+
+    def add_left(self, data_in):
+        NewNode = Node(data_in)
+        NewNode.next = self.head
+        self.head = NewNode
+		
+# 删除节点
+    def remove(self, Removekey):
+
+        HeadVal = self.head
+
+        if not HeadVal:
+            if (HeadVal.data == Removekey):
+                self.head = HeadVal.next
+                HeadVal = None
+                return
+
+        while not HeadVal:
+            if HeadVal.data == Removekey:
+                break
+            prev = HeadVal
+            HeadVal = HeadVal.next
+
+        if (HeadVal == None):
+            return
+
+        prev.next = HeadVal.next
+
+        HeadVal = None
+
+    def show(self):
+        printval = self.head
+        while (printval):
+            print(printval.data),
+            printval = printval.next
+
+
+li = SLinkedList()
+li.add_left("Mon")
+li.add_left("Tue")
+li.add_left("Wed")
+li.add_left("Thu")
+li.add_left("Tue")
+li.show()
+复制代码结果：
+Thu
+Wed
+Mon
+
+作者：taotianli
+链接：https://juejin.im/post/5b93be37e51d450e68674833
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
